@@ -5,7 +5,7 @@ interface Props extends PropsWithChildren {
   onClick?: () => void;
   className?: string;
 }
-const Button: React.FC<Props> = ({ onClick, className, children }) => (
+const ButtonBlack: React.FC<Props> = ({ onClick, className, children }) => (
   <button
     onClick={onClick}
     className={clsx(
@@ -17,4 +17,4 @@ const Button: React.FC<Props> = ({ onClick, className, children }) => (
   </button>
 );
 
-export default Button;
+export default ButtonBlack;

@@ -1,41 +1,56 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { format } from "date-fns";
 import { useState } from "react";
 import Calendar from "./components/Calendar";
-import Button from "./components/Button";
+import ButtonBlack from "./components/Button";
+import { Button, Modal } from "antd";
+import type { SizeType } from "antd/es/config-provider/SizeContext";
+import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
 
-const App = () => {
+const App: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [show, setShow] = useState<boolean>(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [size, setSize] = useState<SizeType>("large");
   const handleSetToday = () => {
     setCurrentDate(new Date());
   };
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   return (
-    <div className="">
-      {show ? (
-        <div className="h-screen w-full flex justify-center items-center">
-          <button
-            className="flex bg-black text-white justify-center items-center border-2 border-solid border-[rgb(0,0,0)] rounded-[12px] px-4 py-2 font-bold font-serif text-[20px]"
-            onClick={() => setShow(false)}
-          >
-            Calendar
-          </button>
-        </div>
-      ) : (
-        <div className="h-screen w-full flex justify-center items-center">
-          <div className="flex flex-col items-center gap-8">
-            <div className="flex flex-col items-center gap-4">
-              <p>
-                <strong>Picked Date: </strong>
-                {format(currentDate, "dd LLLL yyyy")}
-              </p>
-              <Button onClick={handleSetToday}>Today</Button>
-            </div>
-            <Calendar value={currentDate} onChange={setCurrentDate} />
+    <>
+      <div className="h-screen w-full flex justify-center items-center">
+        <Button type="primary" size={size} onClick={showModal}>
+          Calendar
+        </Button>
+      </div>
+      <Modal
+        title="Calendar"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <div className="flex flex-col items-center gap-8">
+          <div className="flex flex-col items-center gap-4">
+            <p>
+              <strong>Picked Date: </strong>
+              {format(currentDate, "dd LLLL yyyy")}
+            </p>
+            <ButtonBlack onClick={handleSetToday}>Today</ButtonBlack>
           </div>
+          <Calendar value={currentDate} onChange={setCurrentDate} />
         </div>
-      )}
-    </div>
+      </Modal>
+    </>
   );
 };
 
